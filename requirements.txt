@@ -1,0 +1,11 @@
+name = "drf_sample"
+version = "0.1.0"
+description = ""
+authors = ["Anaxuname <anaxuname@gmail.com>"]
+packages = [{include = "drf_sample"}]
+
+python = "^3.11"
+Django = "4.2.7"
+psycopg2-binary = "2.9.9"
+djangorestframework = "3.14.0"
+pillow = "10.2.0"
