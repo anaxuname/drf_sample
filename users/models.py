@@ -23,7 +23,7 @@ class User(AbstractUser):
         verbose_name_plural = "Users"
 
 
-class OblateMethod(models.IntegerChoices):
+class PaymentMethod(models.IntegerChoices):
     cash = 1, "Cash"
     transfer_to_bank = 2, "Transfer"
 
@@ -35,5 +35,5 @@ class Payment(models.Model):
     paid_lesson = models.ForeignKey("materials.Lesson", on_delete=models.CASCADE, verbose_name="Paid Lesson")
     paymant_amount = models.FloatField(verbose_name="Payment amount")
     oblate_method = models.IntegerField(
-        choices=OblateMethod.choices, default=OblateMethod.cash, verbose_name="Oblate method"
+        choices=PaymentMethod.choices, default=PaymentMethod.cash, verbose_name="Oblate method"
     )
