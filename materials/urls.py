@@ -1,4 +1,4 @@
-from materials.views import CourseCreateAPIView, CourseViewSet
+from materials.views import CourseViewSet
 from rest_framework.routers import DefaultRouter
 from materials.apps import MaterialsConfig
 from django.urls import path
