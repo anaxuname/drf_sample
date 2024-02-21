@@ -11,6 +11,7 @@ media
 
 # If you are using PyCharm #
 .idea/
+.json
 
 .vscode/
 # File-based project format
