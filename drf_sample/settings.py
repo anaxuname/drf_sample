@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/5.0/ref/settings/
 """
 
+from datetime import timedelta
 import os
 from pathlib import Path
 
@@ -140,10 +141,14 @@ REST_FRAMEWORK = {
     "DEFAULT_AUTHENTICATION_CLASSES": [
         "rest_framework_simplejwt.authentication.JWTAuthentication",
     ],
+    # Замена на права доступа для всех, права на авторизацию указываются отдельно
+    "DEFAULT_PERMISSION_CLASSES": [
+        "rest_framework.permissions.AllowAny",
+    ],
 }
 
 # Настройки срока действия токенов
-# SIMPLE_JWT = {
-#   "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
-#   "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
-# }
+SIMPLE_JWT = {
+    "ACCESS_TOKEN_LIFETIME": timedelta(minutes=15),
+    "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
+}

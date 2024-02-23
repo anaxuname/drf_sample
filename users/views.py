@@ -1,6 +1,6 @@
-# from django.shortcuts import render
 from rest_framework import generics
 from django_filters.rest_framework import DjangoFilterBackend
+from rest_framework.permissions import IsAuthenticated
 from rest_framework.filters import OrderingFilter
 from users.models import Payment, User
 
@@ -22,13 +22,16 @@ class UserCreateView(generics.CreateAPIView):
 class UserUpdateView(generics.UpdateAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class UserDeleteView(generics.DestroyAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
 
 
 class UserRetrieveView(generics.RetrieveAPIView):
     serializer_class = UserSerializer
     queryset = User.objects.all()
+    permission_classes = [IsAuthenticated]
