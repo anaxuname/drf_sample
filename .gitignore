@@ -1,3 +1,5 @@
+data.json
+
 # Django #
 *.log
 *.pot
@@ -11,7 +13,6 @@ media
 
 # If you are using PyCharm #
 .idea/
-.json
 
 .vscode/
 # File-based project format

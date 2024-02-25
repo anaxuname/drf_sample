@@ -1,7 +1,7 @@
 from materials.serializers import CourseSerializer, LessonSerializer
 from rest_framework import viewsets, generics
 from materials.models import Course, Lesson
-from rest_framework.permissions import AllowAny
+from rest_framework.permissions import AllowAny, IsAuthenticated
 
 from users.permissions import IsAuthorOrReadOnly, IsModerator
 
@@ -14,14 +14,24 @@ class CourseViewSet(viewsets.ModelViewSet):
         permission_classes = [AllowAny]
         if self.action == "update" or self.action == "partial_update":
             permission_classes = [IsAuthorOrReadOnly | IsModerator]
-        elif self.action == "create" or self.action == "destroy":
+        elif self.action == "create":
+            permission_classes = [IsAuthenticated]
+        elif self.action == "destroy":
             permission_classes = [IsAuthorOrReadOnly]
         return [permission() for permission in permission_classes]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+        return super().perform_create(serializer)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):
     serializer_class = LessonSerializer
-    permission_classes = [IsAuthorOrReadOnly]
+    permission_classes = [IsAuthenticated]
+
+    def perform_create(self, serializer):
+        serializer.save(user=self.request.user)
+        return super().perform_create(serializer)
 
 
 class LessonListAPIView(generics.ListAPIView):
@@ -36,7 +46,6 @@ class LessonUpdateAPIView(generics.UpdateAPIView):
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
-    # serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthorOrReadOnly]
 
