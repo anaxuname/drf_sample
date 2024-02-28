@@ -1,10 +1,12 @@
 from rest_framework.serializers import ValidationError
 
+RIGHT_LINK = "https://www.youtube.com"
 
-class TitleValidator:
+
+class LinkValidator:
     def __init__(self, field):
         self.field = field
 
     def __call__(self, value):
-        if not value.isalpha():
-            raise ValidationError(self.field + " must contain only letters", value)
+        if self.link not in RIGHT_LINK:
+            raise ValidationError("Wrong link")

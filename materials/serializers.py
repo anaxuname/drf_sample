@@ -1,5 +1,6 @@
 from rest_framework import serializers
 from materials.models import Course, Lesson
+from materials.validators import LinkValidator
 
 
 class CourseSerializer(serializers.ModelSerializer):
@@ -18,6 +19,8 @@ class CourseSerializer(serializers.ModelSerializer):
 
 
 class LessonSerializer(serializers.ModelSerializer):
+    link = serializers.URLField(validators=[LinkValidator("link")])
+
     class Meta:
         model = Lesson
         fields = [
