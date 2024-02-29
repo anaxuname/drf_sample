@@ -1,9 +1,11 @@
+from django.shortcuts import get_object_or_404
 from materials.paginators import MaterialPaginator
 from materials.serializers import CourseSerializer, LessonSerializer
 from rest_framework import viewsets, generics
-from materials.models import Course, Lesson
+from materials.models import Course, Lesson, Subscription
+from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
-
+from rest_framework.response import Response
 from users.permissions import IsAuthorOrReadOnly, IsModerator
 
 
@@ -56,3 +58,20 @@ class LessonRetrieveAPIView(generics.RetrieveAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthorOrReadOnly]
+
+
+class SubscribeAPIView(APIView):
+    def post(self, *args, **kwargs):
+        user = self.request.user
+        course_id = self.request.data.get("course_id")
+        course_item = get_object_or_404(Course, id=course_id)
+
+        subs_item = Subscription.objects.filter(user=user, course=course_id).all()
+
+        if subs_item.exists():
+            subs_item.delete()
+            message = "подписка удалена"
+        else:
+            Subscription.objects.create(user=user, course=course_item)
+            message = "подписка добавлена"
+        return Response({"message": message})
