@@ -12,6 +12,7 @@ from users.permissions import IsAuthorOrReadOnly, IsModerator
 class CourseViewSet(viewsets.ModelViewSet):
     serializer_class = CourseSerializer
     queryset = Course.objects.all()
+    pagination_class = MaterialPaginator
 
     def get_permissions(self):
         permission_classes = [AllowAny]
