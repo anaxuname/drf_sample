@@ -21,7 +21,7 @@ class Lesson(models.Model):
     preview_lesson = models.ImageField(upload_to="course", blank=True, null=True, verbose_name="Lesson image")
     description = models.TextField(verbose_name="Lesson description")
     link = models.CharField(max_length=200, verbose_name="Lesson link")
-    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Course pk")
+    course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name="Course pk", related_name="lessons")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="User")
 
     def __str__(self):
