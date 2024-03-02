@@ -13,16 +13,21 @@ https://docs.djangoproject.com/en/5.0/ref/settings/
 from datetime import timedelta
 import os
 from pathlib import Path
+import environ
+
+
+env = environ.Env(DEBUG=(bool, False))
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+environ.Env.read_env(os.path.join(BASE_DIR, ".env"))
 
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/5.0/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = os.getenv("SECRET_KEY")
+SECRET_KEY = env("SECRET_KEY")
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -88,7 +93,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "drf_sample",
         "USER": "postgres",
-        "PASSWORD": os.getenv("DB_PASSWORD") or "1",
+        "PASSWORD": env("DB_PASSWORD"),
     }
 }
 
