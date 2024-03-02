@@ -8,5 +8,5 @@ class LinkValidator:
         self.field = field
 
     def __call__(self, value):
-        if self.link not in RIGHT_LINK:
+        if not value.startswith(RIGHT_LINK):
             raise ValidationError("Wrong link")
