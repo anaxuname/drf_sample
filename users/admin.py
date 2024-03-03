@@ -5,7 +5,7 @@ from users.models import Payment, User
 
 @admin.register(Payment)
 class PaymentAdmin(admin.ModelAdmin):
-    list_display = ("user", "date", "paid_course", "paid_lesson")
+    list_display = ("user", "date", "paid_course")
 
 
 @admin.register(User)
