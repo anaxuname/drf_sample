@@ -62,6 +62,8 @@ class LessonRetrieveAPIView(generics.RetrieveAPIView):
 
 
 class SubscribeAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
     def post(self, *args, **kwargs):
         user = self.request.user
         course_id = self.request.data.get("course_id")
