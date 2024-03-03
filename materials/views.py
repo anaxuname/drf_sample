@@ -7,6 +7,8 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from users.permissions import IsAuthorOrReadOnly, IsModerator
+from drf_yasg.utils import swagger_auto_schema
+from drf_yasg import openapi
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -64,6 +66,19 @@ class LessonRetrieveAPIView(generics.RetrieveAPIView):
 class SubscribeAPIView(APIView):
     permission_classes = [IsAuthenticated]
 
+    @swagger_auto_schema(
+        responses={200: "подписка добавлена или удалена"},
+        request_body=openapi.Schema(
+            type=openapi.TYPE_ARRAY,
+            items=openapi.Schema(
+                type=openapi.TYPE_OBJECT,
+                description="id курса",
+                properties={
+                    "course_id": openapi.Schema(type=openapi.TYPE_INTEGER, description="id курса", example=1),
+                },
+            ),
+        ),
+    )
     def post(self, *args, **kwargs):
         user = self.request.user
         course_id = self.request.data.get("course_id")

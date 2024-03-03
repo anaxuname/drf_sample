@@ -7,6 +7,7 @@ class Course(models.Model):
     preview_course = models.ImageField(upload_to="course", blank=True, null=True, verbose_name="Course image")
     description = models.TextField(verbose_name="Course description")
     user = models.ForeignKey(settings.AUTH_USER_MODEL, on_delete=models.CASCADE, verbose_name="User")
+    price_rub = models.IntegerField(default=0, verbose_name="Course price (RUB)")
 
     def __str__(self):
         return f"{self.name}"
