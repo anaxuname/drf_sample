@@ -37,6 +37,8 @@ class CourseTestCase(APITestCase):
                         "preview_course": None,
                         "description": "Test description",
                         "count_lessons": self.course.lessons.count(),
+                        "subscription": False,
+                        "usd_price": 0.0,
                         "list_lessons": [lesson.name for lesson in self.course.lessons.all()],
                     }
                 ],

@@ -36,8 +36,7 @@ class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
     date = models.DateField(verbose_name="Payment date")
     paid_course = models.ForeignKey("materials.Course", on_delete=models.CASCADE, verbose_name="Paid Course")
-    paid_lesson = models.ForeignKey("materials.Lesson", on_delete=models.CASCADE, verbose_name="Paid Lesson")
     paymant_amount = models.FloatField(verbose_name="Payment amount")
-    oblate_method = models.IntegerField(
+    payment_method = models.IntegerField(
         choices=PaymentMethod.choices, default=PaymentMethod.cash, verbose_name="Oblate method"
     )
