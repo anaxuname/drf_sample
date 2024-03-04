@@ -6,6 +6,8 @@ from materials.models import Course, Lesson, Subscription
 from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
+from materials.services import StripeAPI, convert_rub_to_usd
+from users.models import Payment
 from users.permissions import IsAuthorOrReadOnly, IsModerator
 from drf_yasg.utils import swagger_auto_schema
 from drf_yasg import openapi
@@ -28,6 +30,7 @@ class CourseViewSet(viewsets.ModelViewSet):
 
     def perform_create(self, serializer):
         serializer.save(user=self.request.user)
+
         return super().perform_create(serializer)
 
 
@@ -93,3 +96,37 @@ class SubscribeAPIView(APIView):
             Subscription.objects.create(user=user, course=course_item)
             message = "подписка добавлена"
         return Response({"message": message})
+
+
+class CheckoutCourseAPIView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def post(self, *args, **kwargs):
+        course_id = self.request.data.get("course_id")
+        course_item = get_object_or_404(Course, id=course_id)
+        stripe_api = StripeAPI()
+        if course_item.stripe_price_id is None or course_item.stripe_product_id is None:
+            price = stripe_api.create_product(course_item.name, convert_rub_to_usd(course_item.price_rub))
+            course_item.stripe_price_id = price["id"]
+            course_item.stripe_product_id = price["product"]
+            course_item.save()
+        base_url = "{0}://{1}".format(self.request.scheme, self.request.get_host())
+        session = stripe_api.create_session(course_item.stripe_price_id, base_url, course_id)
+        return Response({"url": session.url})
+
+
+class SuccessView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        course = get_object_or_404(Course, id=kwargs.get("pk"))
+        Payment.objects.create(user=user, paid_course=course, paymant_amount=course.price_rub)
+        return Response({"message": "success"})
+
+
+class CancelView(APIView):
+    permission_classes = [IsAuthenticated]
+
+    def get(self, *args, **kwargs):
+        return Response({"message": "Payment error"})

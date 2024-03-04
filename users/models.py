@@ -30,13 +30,14 @@ class User(AbstractUser):
 class PaymentMethod(models.IntegerChoices):
     cash = 1, "Cash"
     transfer_to_bank = 2, "Transfer"
+    acquiring = 3, "Acquiring"
 
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name="User")
-    date = models.DateField(verbose_name="Payment date")
+    date = models.DateField(verbose_name="Payment date", auto_now_add=True)
     paid_course = models.ForeignKey("materials.Course", on_delete=models.CASCADE, verbose_name="Paid Course")
     paymant_amount = models.FloatField(verbose_name="Payment amount")
     payment_method = models.IntegerField(
-        choices=PaymentMethod.choices, default=PaymentMethod.cash, verbose_name="Oblate method"
+        choices=PaymentMethod.choices, default=PaymentMethod.acquiring, verbose_name="Payment method"
     )
