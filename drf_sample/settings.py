@@ -174,3 +174,6 @@ SIMPLE_JWT = {
 
 CURRENCY_API_URL = "https://api.currencyapi.com/"
 CURRENCY_API_KEY = env("CURRENCY_API_KEY")
+
+STRIPE_API_URL = "https://api.stripe.com/v1/"
+STRIPE_API_KEY = env("STRIPE_API_KEY")
