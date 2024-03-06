@@ -1,7 +1,10 @@
+from datetime import datetime, timedelta
 from celery import shared_task
 from django.urls import reverse_lazy
 from materials.models import Lesson, Subscription
 from django.core.mail import send_mail
+
+from users.models import User
 
 
 @shared_task
@@ -15,3 +18,10 @@ def send_email_to_subscribers(lesson_pk, base_url):
         emails,
         fail_silently=False,
     )
+
+
+def deactivate_unactive_users():
+    users = User.objects.filter(last_login__lt=datetime.now() - timedelta(days=30))
+    for user in users:
+        user.is_active = False
+        user.save()
