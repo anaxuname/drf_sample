@@ -7,6 +7,7 @@ from rest_framework.views import APIView
 from rest_framework.permissions import AllowAny, IsAuthenticated
 from rest_framework.response import Response
 from materials.services import StripeAPI, convert_rub_to_usd
+from materials.tasks import send_email_to_subscribers
 from users.models import Payment
 from users.permissions import IsAuthorOrReadOnly, IsModerator
 from drf_yasg.utils import swagger_auto_schema
@@ -39,7 +40,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
     permission_classes = [IsAuthenticated]
 
     def perform_create(self, serializer):
-        serializer.save(user=self.request.user)
+        instance = serializer.save(user=self.request.user)
+        base_url = "{0}://{1}".format(self.request.scheme, self.request.get_host())
+        send_email_to_subscribers.delay(lesson_pk=instance.pk, base_url=base_url)
         return super().perform_create(serializer)
 
 
