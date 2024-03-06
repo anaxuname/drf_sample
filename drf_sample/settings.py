@@ -49,6 +49,7 @@ INSTALLED_APPS = [
     "rest_framework_simplejwt",
     "drf_yasg",
     "corsheaders",
+    "django_celery_beat",
 ]
 
 INSTALLED_APPS += [
@@ -183,3 +184,11 @@ CELERY_RESULT_BACKEND = "redis://localhost:6379"
 CELERY_TIMIZONE = "Russia/Moscow"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
+
+
+# CELERY_BEAT_SCHEDULE = {
+#     "task-name": {
+#         "task": "myapp.tasks.my_task",
+#         "schedule": timedelta(minutes=10),
+#     },
+# }
