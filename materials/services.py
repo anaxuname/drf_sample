@@ -1,4 +1,4 @@
-from django.urls import reverse, reverse_lazy
+from django.urls import reverse
 import requests
 
 from drf_sample import settings
