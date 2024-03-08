@@ -1,5 +1,6 @@
 from datetime import datetime, timedelta
 from celery import shared_task
+from django.conf import settings
 from django.urls import reverse_lazy
 from materials.models import Lesson, Subscription
 from django.core.mail import send_mail
@@ -14,7 +15,7 @@ def send_email_to_subscribers(lesson_pk, base_url):
     send_mail(
         "Новый урок!",
         "Ссылка на урок: " + base_url + reverse_lazy("materials:lesson_retrieve", args=[lesson_pk]),
-        "from@example.com",
+        settings.FROM_EMAIL,
         emails,
         fail_silently=False,
     )

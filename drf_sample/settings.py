@@ -135,7 +135,7 @@ AUTH_PASSWORD_VALIDATORS = [
 
 LANGUAGE_CODE = "en-us"
 
-TIME_ZONE = "UTC"
+TIME_ZONE = "Europe/Moscow"
 
 USE_I18N = True
 
@@ -172,6 +172,7 @@ SIMPLE_JWT = {
     "REFRESH_TOKEN_LIFETIME": timedelta(days=1),
 }
 
+FROM_EMAIL = env("FROM_EMAIL")
 
 CURRENCY_API_URL = "https://api.currencyapi.com/"
 CURRENCY_API_KEY = env("CURRENCY_API_KEY")
@@ -181,14 +182,14 @@ STRIPE_API_KEY = env("STRIPE_API_KEY")
 
 CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
 CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
-CELERY_TIMIZONE = "Russia/Moscow"
+CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
 
 
-# CELERY_BEAT_SCHEDULE = {
-#     "task-name": {
-#         "task": "myapp.tasks.my_task",
-#         "schedule": timedelta(minutes=10),
-#     },
-# }
+CELERY_BEAT_SCHEDULE = {
+    "task-name": {
+        "task": "materials.tasks.deactivate_unactive_users",
+        "schedule": timedelta(days=1),
+    },
+}
