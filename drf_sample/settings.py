@@ -108,6 +108,7 @@ DATABASES = {
         "NAME": "drf_sample",
         "USER": "postgres",
         "PASSWORD": env("DB_PASSWORD"),
+        "HOST": "db",
     }
 }
 
@@ -180,8 +181,8 @@ CURRENCY_API_KEY = env("CURRENCY_API_KEY")
 STRIPE_API_URL = "https://api.stripe.com/v1/"
 STRIPE_API_KEY = env("STRIPE_API_KEY")
 
-CELERY_BROKER_URL = "redis://127.0.0.1:6379/0"
-CELERY_RESULT_BACKEND = "redis://127.0.0.1:6379/0"
+CELERY_BROKER_URL = "redis://redis:6379/0"
+CELERY_RESULT_BACKEND = "redis://redis:6379/0"
 CELERY_TIMEZONE = "Europe/Moscow"
 CELERY_TASK_TRACK_STARTED = True
 CELERY_TASK_TIME_LIMIT = 30 * 60
