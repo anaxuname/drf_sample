@@ -107,7 +107,7 @@ DATABASES = {
         "ENGINE": "django.db.backends.postgresql",
         "NAME": "drf_sample",
         "USER": "postgres",
-        "PASSWORD": env("DB_PASSWORD"),
+        "PASSWORD": env("POSTGRES_PASSWORD"),
         "HOST": "db",
     }
 }
